@@ -1,0 +1,70 @@
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
+      <div class="logo">
+        <a target="_blank" rel="noopener noreferrer" 
+           href="/page-user.html" class="simple-text logo-normal">
+          AI智能医学影像分割平台
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        
+        <ul class="nav">
+
+          {% if current_user.is_authenticated %}
+          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
+            <a class="nav-link" href="/page-user.html">
+              <i class="material-icons">person</i>
+              <p>个人信息</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-test' in segment %} active {% endif %}">
+            <a class="nav-link" href="/ui-test.html">
+              <i class="material-icons">near_me</i>
+              <p>测试模型</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-feedback' in segment %} active {% endif %}">
+            <a class="nav-link" href="/ui-feedback.html">
+              <i class="material-icons">content_paste</i>
+              <p>模型反馈</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-segment' in segment %} active {% endif %}">
+            <a class="nav-link" href="/ui-segment.html">
+              <i class="material-icons">laptop</i>
+              <p>影像分割</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-history' in segment %} active {% endif %}">
+            <a class="nav-link" href="/ui-history.html">
+              <i class="material-icons">library_books</i>
+              <p>历史记录</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'ui-database' in segment %} active {% endif %}">
+            <a class="nav-link" href="/ui-database.html">
+              <i class="material-icons">library_books</i>
+              <p>上传数据集</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ url_for('base_blueprint.logout') }}" >
+              <i class="material-icons">directions_run</i>
+              <p>退出</p>
+            </a>
+          </li>
+          {% else %}
+{#          <li class="nav-item ">#}
+{#            <a target="_blank" rel="noopener noreferrer"  #}
+{#               class="nav-link" href="https://www.creative-tim.com/templates/flask">#}
+{#              <i class="material-icons">cloud_download</i>#}
+{#              <p>More Starters</p>#}
+{#            </a>#}
+{#          </li>#}
+          {% endif %}
+
+        </ul>
+
+
+      </div>
+
+    </div>

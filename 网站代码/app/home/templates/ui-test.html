@@ -1,0 +1,316 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 测试 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="d-inline-flex">
+    <div class="row-auto" style="margin-left: -20px;">
+        <div class="col-md-6" style="width: 350px; height: 520px; margin-top: -65px">
+          <div class="card" style="width: 350px; height: 520px">
+            <div class="card-header card-chart">
+                <img src="" id="img1" style="width: 265px; height: 265px;">
+            </div>
+            <div class="card-body" style="margin-left: 10px">
+                <h4 class="card-title text-warning">上传预测图片(.jpg, .png, .jpeg)</h4>
+                <input type="file" name="file" id="upload1" accept=".jpg, .png, .jpeg" style="width:300px; margin-top: 10px;" class="text-warning">
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <div class="row-auto" style="margin-left: 50px; height: 520px; width: 350px">
+        <div class="col-md-6" style="margin-top: -65px">
+          <div class="card" style="width: 350px; height: 520px">
+            <div class="card-header card-chart">
+                <img src="" id="img2" style="width: 265px; height: 265px;">
+            </div>
+            <div class="card-body " style="margin-left: 10px">
+                <h4 class="card-title text-info">上传标注图片(.jpg, .png, .jpeg)</h4>
+                <input type="file" name="file" id="upload2" accept=".jpg, .png, .jpeg" style="width:300px; margin-top: 10px;" class="text-info">
+                <div class="form-horizontal form-inline">
+                    <div class="control-label col-lg-1 text-nowrap">
+                        <label class="text-info" style="margin-left: 20px; margin-top: 10px">网络模型:</label>
+                    </div>
+                    <div style="margin-left: 60px">
+                        <select class="form-control text-info" id="modelName">
+                            <option>肝脏模型(ERU-Net_liver)</option>
+                            <option>癌肿瘤细胞模型(ERU-Net_cancerCells)</option>
+                        </select>
+                    </div>
+              </div>
+            </div>
+            <div class="card-footer" style="margin-top: -30px">
+                <div class="control-label col-lg-1 text-nowrap">
+                    <button type="button" class="btn btn-info btn-link" onclick="test()" style="margin-left: -25px"><h4>开始分割</h4></button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3" style="width: 350px; height: 520px; margin-top: -35px; margin-left: 50px;">
+      <div class="card" style="width: 350px; height: 520px; margin-top: 0px">
+        <div class="card-header card-chart" id="img_box">
+            <img src="" id="" style="width: 265px; height: 265px;">
+        </div>
+        <div class="card-body">
+            <h4 class="card-title text-primary" style="margin-left: 10px">分割结果图</h4>
+            <div class="button-container" style="margin-top: 25px" id="buttons">
+                  <button id="downloadImage" href="javascript:void(0)" class="btn btn-primary btn-round m-2"
+                          data-toggle="modal" data-target="#metricsModal">
+                    <i class="material-icons">search</i> 查看指标
+                  </button>
+                  <button href="javascript:void(0)" class="btn btn-primary btn-round m-2" title="编辑反馈"
+                          data-toggle="modal" data-target="#myModal" >
+                    <i class="material-icons">create</i> 编辑反馈
+                  </button>
+            </div>
+        </div>
+        <div class="card-footer" >
+          <div class="stats">
+{#            <i class="material-icons">access_time</i> 当前时间: 22:20 2021-4-13#}
+          </div>
+        </div>
+      </div>
+      <div class="modal" tabindex="-1" role="dialog" id="myModal">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-primary">分析结果</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  <i class="tim-icons icon-simple-remove text-info"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1" class="text-info">病例名称</label>
+                        <input type="" class="form-control text-info" id="form-name" placeholder="">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="text-info">网络模型</label>
+                        <select class="form-control" data-style="btn btn-link" id="form-model">
+                            <option>肝脏模型(ERU-Net_liver)</option>
+                            <option>癌肿瘤细胞模型(ERU-Net_cancerCells)</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlTextarea1 " class="text-info">模型反馈</label>
+                        <textarea class="form-control" id="form-desc" rows="4"></textarea>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="upload()">提交反馈</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div style="width: 20rem; height: 25rem; margin: 10rem auto;" class="card modal" role="diglog" id="metricsModal">
+        <table class="table table-hover" style="border-collapse: separate; border-spacing: 2.5rem 0;">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center text-info">#</th>
+                    <th scope="col" class="text-info">Metric</th>
+                    <th scope="col" class="text-right text-info">score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="text-center">1</th>
+                    <td>Dice</td>
+                    <td class="text-right" id="dice">0.00</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">2</th>
+                    <td>VOE</td>
+                    <td class="text-right" id="voe">0.00</td>
+
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">3</th>
+                    <td>RVD</td>
+                    <td class="text-right" id="rvd">0.00</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">4</th>
+                    <td>SEN</td>
+                    <td class="text-right" id="sen">0.00</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">5</th>
+                    <td>IOU</td>
+                    <td class="text-right" id="iou">0.00</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+    </div>
+    </div>
+
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) {
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+
+    $("#upload1").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;//获取文件信息
+        if (objUrl) {
+            $("#img1").attr("src", objUrl);
+            $("#img2").attr("src", null);
+            $("#img2").attr("height", "265px");
+            $("#img2").attr("width", "265px");
+            $("#pred_img0").attr("src", null);
+            $("#pred_img0").attr("height", "265px");
+            $("#pred_img0").attr("width", "265px");
+            setValue('dice', '0.00');
+            setValue('iou', '0.00');
+            setValue('rvd', '0.00');
+            setValue('sen', '0.00');
+            setValue('voe', '0.00');
+        }
+    });
+
+    $("#upload2").change(function(){
+        var objUrl = getObjectURL(this.files[0]) ;//获取文件信息
+        if (objUrl) {
+            $("#img2").attr("src", objUrl);
+        }
+    });
+
+    // 获取下拉框的值
+    function getSelectValue(id) {
+        var obj = document.getElementById(id)
+        var index = obj.selectedIndex
+        var value = obj.options[index].value
+        return value
+    }
+
+    function setValue(id, value) {
+        var obj = document.getElementById(id);
+        obj.innerText = value
+    }
+
+
+    // 全局变量 metrics 方便后面用
+    var metrics;
+    // 预测
+    function test() {
+        var imageobj = $("#upload1")[0].files[0];
+        var labelobj = $("#upload2")[0].files[0];
+        var model = getSelectValue('modelName');
+        let form = new FormData();
+        form.append("image", imageobj);
+        form.append("label", labelobj);
+        form.append("model", model);
+        $.ajax({
+            type: 'POST',
+            url: "test",
+            data: form,
+            async: false,       //同步执行
+            processData: false, // 告诉jquery要传输data对象
+            contentType: false, //告诉jquery不需要增加请求头对于contentType的设置
+            success: function (res) {
+                let box = document.getElementById('img_box');
+                box.innerHTML = res.data.img;
+                metrics = res.data.metrics;
+                console.log(metrics)
+                setValue('dice', metrics['Dice']);
+                setValue('iou', metrics['IOU']);
+                setValue('rvd', metrics['RVD']);
+                setValue('sen', metrics['SEN']);
+                setValue('voe', metrics['VOE']);
+            }, error: function () {
+                console.log("后台处理错误");
+            }
+        });
+    }
+
+    // 评价病情并保存
+    function upload() {
+        let name = document.getElementById('form-name');
+        let model = document.getElementById('form-model');
+        let desc = document.getElementById('form-desc');
+        let form = new FormData();
+        form.append("name", name.value);
+        form.append("model", model.value);
+        form.append("desc", desc.value);
+        form.append('metrics', JSON.stringify(metrics));
+        console.log(form);
+        $.ajax({
+            type: 'POST',
+            url: "test_save",
+            data: form,
+            async: false,       //同步执行
+            processData: false, // 告诉jquery要传输data对象
+            contentType: false, //告诉jquery不需要增加请求头对于contentType的设置
+            success: function (res) {
+                alert(res.data)
+                name.value = '';
+                desc.value = '';
+            }, error: function (res) {
+                console.log(res.data)
+                alert(res.data)
+            }
+        });
+    }
+
+
+
+
+    function dataURLtoBlob(dataUrl) {
+        var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type: mime});
+    }
+
+    function downloadFile(url, name='hhh') {
+        var a = document.createElement('a')
+        a.setAttribute("href", url)
+        a.setAttribute("download", name)
+        a.setAttribute("target", "_blank")
+        let clickEvent = document.createEvent("MouseEvents");
+        clickEvent.initEvent("click", true, true);
+        a.dispatchEvent(clickEvent);
+    }
+
+    function downloadFileByBase64(base64, name) {
+        var myBlob = dataURLtoBlob(base64)
+        var myUrl = URL.createObjectURL(myBlob)
+        downloadFile(myUrl, name)
+    }
+
+    function downloadImage(id, name) {
+        let img = document.getElementById(id)
+        src = img.getAttribute("src")
+        downloadFileByBase64(src, name)
+    }
+
+
+</script>
+
+{% endblock javascripts %}

@@ -1,0 +1,94 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 上传数据集 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="col-md-4" style="margin-top: -40px">
+      <div class="card">
+          <div class="card-header card-header-icon card-header-rose">
+            <div class="card-icon">
+              <i class="material-icons">language</i>上传数据集(.zip, .7z)
+            </div>
+          </div>
+          <div class="card-body">
+              <input type="file" name="file" id="file" accept=".7z, .zip" >
+              <div class="input-group" style="margin-top: 20px">
+                  <span class="input-group-addon text-rose" style="margin-top: 5px">数据集名称:</span>
+                  <input type="text" class="form-inline" name="name" id="name" style="width: 200px; margin-left: 20px">
+              </div>
+              <div class="input-group" style="margin-top: 20px">
+                  <span class="input-group-addon text-rose" style="margin-top: 5px">病理类型:</span>
+                  <input type="text" class="form-inline" name="type" id="type" style="width: 200px; margin-left: 32px">
+              </div>
+              <button type="button" class="btn btn-rose" style="margin-top: 20px" onclick="upload()">确认上传</button>
+          </div>
+      </div>
+    </div>
+
+    <div style="width:800px; float: right; margin-top: -330px">
+    {% for database in databases %}
+        <div class="card" style="">
+            <div class="card-header" role="tab">
+              <h5 class="mb-0">
+                <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#box{{ loop.index }}">
+                    {{ database.name }}
+                </button>
+              </h5>
+            </div>
+            <div id="box{{ loop.index }}" class="collapse in" >
+              <div class="card-body">
+                  <ul class="list-inline row-4">
+                    <li class="list-inline-item col-4" >
+                        <label class="text-info" style="padding-right: 20px"><h5>病理类型: {{ database.type }}</h5></label>
+                    </li>
+                    <li class="list-inline-item col-4" style="margin-left: 150px">
+                        <label class="text-info" style="padding-right: 20px"><h5>上传时间: {{ database.time }}</h5></label>
+                    </li>
+
+                  </ul>
+              </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    </div>
+
+
+
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script>
+        function upload() {
+            let name = document.getElementById('name');
+            let type = document.getElementById('type');
+            let form = new FormData();
+            form.append('name', name.value);
+            form.append('type', type.value);
+            $.ajax({
+                type: 'POST',
+                url: "database",
+                data: form,
+                async: false,       //同步执行
+                processData: false, // 告诉jquery要传输data对象
+                contentType: false, //告诉jquery不需要增加请求头对于contentType的设置
+                success: function (res) {
+                    console.log(res.data);
+                    name.value = '';
+                    type.value = '';
+                    window.location.href = '/ui-database.html';
+                }, error: function (res.data) {
+                    console.log(res.data);
+                }
+            })
+        }
+    </script>
+{% endblock javascripts %}

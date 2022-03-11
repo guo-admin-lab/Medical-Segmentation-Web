@@ -1,0 +1,144 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 个人页面 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="title">个人信息</h5>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <div class="col-md-5 pr-md-1">
+              <div class="form-group">
+                <label>UserID</label>
+                <input type="text" class="form-control" disabled="" value="{{ current_user.id }}">
+              </div>
+            </div>
+            <div class="col-md-3 px-md-1">
+              <div class="form-group">
+                <label>用户名</label>
+                <input type="text" class="form-control"  disabled="" value="{{ current_user.username }}">
+              </div>
+            </div>
+            <div class="col-md-4 pl-md-1">
+              <div class="form-group">
+                <label for="exampleInputEmail1">邮箱</label>
+                <input type="email" class="form-control" value="" id="email">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 pr-md-1">
+              <div class="form-group">
+                <label>姓名</label>
+                <input type="text" class="form-control" placeholder="姓名" value="管泽元" id="name">
+              </div>
+            </div>
+            <div class="col-md-6 pl-md-1">
+              <div class="form-group">
+                <label>职位</label>
+                <input type="text" class="form-control" placeholder="职位" value="骨科医生" id="position">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>工作单位</label>
+                <input type="text" class="form-control" placeholder="工作单位" value="湘潭医院" id="work_unit">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 pr-md-1">
+              <div class="form-group">
+                <label>城市</label>
+                <input type="text" class="form-control" placeholder="城市" value="湘潭" id="city">
+              </div>
+            </div>
+            <div class="col-md-4 px-md-1">
+              <div class="form-group">
+                <label>省份</label>
+                <input type="text" class="form-control" placeholder="省份" value="湖南" id="province">
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-fill btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-user">
+      <div class="card-body">
+        <p class="card-text">
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a href="javascript:void(0)">
+              <img class="avatar" src="{{ url_for('static', filename='assets/img/iu.jpg') }}" alt="=IU." style="height: 100px; width: 100px">
+              <h5 class="title">
+                {{ current_user.username }}
+              </h5>
+            </a>
+            <p class="description">
+              {{ current_user.email }}
+            </p>
+          </div>
+        </p>
+        <div class="card-description">
+          个人信息简介...
+        </div>
+      </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    {#function upload() {#}
+    {#    let name = $("#name").val()#}
+    {#    let email = $("#email").val()#}
+    {#    let position = $("#position").val()#}
+    {#    let work_unit = $("#work_unit").val()#}
+    {#    let city = $("#city").val()#}
+    {#    let province = $("#province").val()#}
+    {#    let form = new FormData()#}
+    {#    form.append('name', name)#}
+    {#    form.append('email', email)#}
+    {#    form.append('position', position)#}
+    {#    form.append('work_unit', work_unit)#}
+    {#    form.append('city', city)#}
+    {#    form.append('province', province)#}
+    {#    $.ajax({#}
+    {#        type: 'POST',#}
+    {#        url: "info",#}
+    {#        data: form,#}
+    {#        async: false,       //同步执行#}
+    {#        processData: false, // 告诉jquery要传输data对象#}
+    {#        contentType: false, //告诉jquery不需要增加请求头对于contentType的设�?#}
+    {#        success: function (res) {#}
+    {#            alert(res.data)#}
+    {#        }, error: function (res) {#}
+    {#            console.log(res.data)#}
+    {#            alert(res.data)#}
+    {#        }#}
+    {#    });#}
+
+</script>
+{% endblock javascripts %}

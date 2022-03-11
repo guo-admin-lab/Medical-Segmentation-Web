@@ -1,0 +1,91 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} 模型反馈 {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+{% for feedback in feedbacks %}
+    <div class="card" style="margin-top: -1rem">
+        <div class="card-header" role="tab">
+          <h5 class="mb-0">
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#box{{ loop.index }}">
+                {{ feedback.casename }}
+            </button>
+          </h5>
+        </div>
+        <div id="box{{ loop.index }}" class="collapse in" >
+          <div class="card-body">
+              <ul class="list-inline row-4">
+                <li class="list-inline-item col-4">
+                    <label class="text-info" style="padding-right: 20px">应用网络:</label>
+                    {{ feedback.modelname }}
+                </li>
+                <li class="list-inline-item col-4">
+                    <b class="text-info" style="padding-right: 20px">反馈结果:</b>
+                    {{ feedback.description }}
+                </li>
+                <li class="list-inline-item col-4">
+                    <b class="text-info" style="padding-right: 20px">测试时间:</b>
+                    {{ feedback.time }}
+                </li>
+                <li class="list-inline-item col-4">
+                    <b class="text-info" style="padding-right: 20px">查看指标:</b>
+                    <button class="btn btn-primary btn-fab btn-fab-mini btn-round" data-toggle="modal" data-target="#metrics{{ loop.index }}">
+                      <i class="material-icons">search</i>
+                    </button>
+                </li>
+              </ul>
+          </div>
+        </div>
+    </div>
+    <div style="width: 20rem; height: 25rem; margin: 10rem auto;" class="card modal" role="diglog" id="metrics{{ loop.index }}">
+        <table class="table table-hover" style="border-collapse: separate; border-spacing: 2.5rem 0;">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center text-info">#</th>
+                    <th scope="col" class="text-info">Metric</th>
+                    <th scope="col" class="text-right text-info">score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="text-center">1</th>
+                    <td>Dice</td>
+                    <td class="text-right" id="dice">{{ feedback.metrics.Dice }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">2</th>
+                    <td>VOE</td>
+                    <td class="text-right" id="voe">{{ feedback.metrics.VOE }}</td>
+
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">3</th>
+                    <td>RVD</td>
+                    <td class="text-right" id="rvd">{{ feedback.metrics.RVD }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">4</th>
+                    <td>SEN</td>
+                    <td class="text-right" id="sen">{{ feedback.metrics.SEN }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-center">5</th>
+                    <td>IOU</td>
+                    <td class="text-right" id="iou">{{ feedback.metrics.IOU }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
